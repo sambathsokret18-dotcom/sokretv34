@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Mobile navigation toggle (hidden on desktop) -->
+    <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="បើកម៉ឺនុយ" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+    <div class="mobile-sidebar-backdrop" id="mobile-sidebar-backdrop" hidden></div>
+
+    <!-- Sidebar Section -->
+    <div class="sidebar" id="app-sidebar">
+        <div class="brand">
+            <i class="fa-solid fa-gear"></i> Dashboard
+        </div>
+        <ul>
+            <li><a href="#" class="active" data-page="home-page"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li><a href="#" data-page="time-page"><i class="fa-solid fa-clock"></i> Time Observe</a></li>
+            <li><a href="#" data-page="clone-page"><i class="fa-solid fa-clone"></i> Clone File</a></li>
+            <li><a href="#" data-page="edit-page"><i class="fa-solid fa-pen-to-square"></i> Edit File</a></li>
+            <li><a href="#" data-page="dashboard-page"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="#" data-page="upload-page"><i class="fa-solid fa-upload"></i> Upload File</a></li>
+        </ul>
+    </div>
+
+
+    <!-- Mobile-only Glass navigation: primary destinations + More sheet -->
+    <nav class="mobile-bottom-nav" aria-label="Main navigation">
+        <a href="#" data-page="home-page" aria-label="Home"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="#" data-page="dashboard-page" aria-label="Dashboard"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a>
+        <a href="#" data-page="time-page" aria-label="Time Observe"><i class="fa-solid fa-clock"></i><span>Time Observe</span></a>
+        <button type="button" id="mobile-more-toggle" aria-expanded="false" aria-controls="mobile-more-sheet"><i class="fa-solid fa-ellipsis"></i><span>More</span></button>
+    </nav>
+    <div class="mobile-more-backdrop" id="mobile-more-backdrop" hidden></div>
+    <section class="mobile-more-sheet" id="mobile-more-sheet" aria-label="More Menu" aria-hidden="true">
+        <div class="mobile-more-handle"></div>
+        <div class="mobile-more-heading"><div><strong>More Menu</strong><small>មុខងារបន្ថែមរបស់ TimeStudyPro</small></div><button type="button" id="mobile-more-close" aria-label="បិទម៉ឺនុយ"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="mobile-more-grid">
+            <button type="button" data-mobile-action="page" data-page="clone-page"><i class="fa-solid fa-clone"></i><span>Clone Day</span></button>
+            <button type="button" data-mobile-action="page" data-page="upload-page"><i class="fa-solid fa-cloud-arrow-up"></i><span>Upload File</span></button>
+            <button type="button" data-mobile-action="page" data-page="edit-page"><i class="fa-solid fa-pen-to-square"></i><span>Edit File</span></button>
+            <button type="button" data-mobile-action="profile"><i class="fa-regular fa-id-card"></i><span>My Profile</span></button>
+            <button type="button" data-mobile-action="settings"><i class="fa-solid fa-sliders"></i><span>Settings</span></button>
+            <button type="button" data-mobile-action="search"><i class="fa-solid fa-magnifying-glass"></i><span>Quick Search</span></button>
+            <button type="button" data-mobile-action="filters"><i class="fa-solid fa-filter"></i><span>Quick Filters</span></button>
+        </div>
+    </section>
+
+    <!-- Main Wrapper Section -->
+    <div class="main-wrapper">
+        
+        <!-- Header Section -->
+        <header class="tsp-app-header">
+            <div class="tsp-header-brand" aria-label="TimeStudyPro">
+                <span class="tsp-header-logo"><i class="fa-solid fa-stopwatch"></i></span>
+                <span class="tsp-header-brand-text"><strong>TimeStudyPro</strong><small>Time Study Workspace</small></span>
+            </div>
+            <div class="tsp-header-current-page" aria-live="polite">
+                <small>CURRENT PAGE</small>
+                <strong id="tsp-current-page-name">Home</strong>
+            </div>
+            <div class="user-menu tsp-header-actions">
+                <button type="button" class="tsp-header-icon-btn" id="notification-btn" aria-label="Notifications" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+                <div class="profile" id="profile-btn" role="button" tabindex="0" aria-label="My Profile">
+                    <img src="SOKRET.png.jpg" alt="Profile">
+                    <span>SOKRET11<i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            
+            <!-- 1. ផ្ទាំង Home Page -->
+            <div id="home-page" class="page-content">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon card-1 icon"><i class="fa-solid fa-chart-simple"></i></div>
+                        <div class="card-info">
+                            <h3>Total File Upload</h3>
+                            <p id="total-file-count">0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon card-2 icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                        <div class="card-info">
+                            <h3>Total Groups</h3>
+                            <p>0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon card-3 icon"><i class="fa-solid fa-users"></i></div>
+                        <div class="card-info">
+                            <h3>Total Users</h3>
+                            <p>0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon card-4 icon"><i class="fa-solid fa-box"></i></div>
+                        <div class="card-info">
+                            <h3>Total Products</h3>
+                            <p>0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. ផ្ទាំង Upload File Page -->
+            <div id="upload-page" class="page-content" style="display: none;">
+                <div class="upload-container">
+                    <h2><i class="fa-solid fa-file-excel" style="color: #10b981;"></i> Upload Excel File</h2>
+                    <p>សូមជ្រើសរើស ឬទម្លាក់ឯកសារ Excel ( .xlsx, .xls ) របស់អ្នកទីនេះ៖</p>
+                    
+                    <form id="upload-form" enctype="multipart/form-data">
+                        <div class="drop-zone" id="drop-zone">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>អូសទម្លាក់ឯកសារទីនេះ ឬ <b>រើសឯកសារ</b></span>
+                            <input type="file" id="excel-file" accept=".xlsx, .xls" hidden>
+                        </div>
+                        
+                        <div id="file-info" class="file-info" style="display: none;">
+                            <i class="fa-solid fa-file-excel"></i>
+                            <span id="file-name">filename.xlsx</span>
+                            <button type="button" id="remove-file" aria-label="ដក File ចេញ"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div id="upload-progress-wrap" class="upload-progress-wrap" hidden aria-live="polite">
+                            <div class="upload-progress-label"><span id="upload-progress-text">កំពុងពិនិត្យ File...</span><b id="upload-progress-percent">0%</b></div>
+                            <progress id="upload-progress" max="100" value="0"></progress>
+                        </div>
+
+                        <button type="submit" class="upload-btn">Upload ចូលប្រព័ន្ធ</button>
+                    </form>
+                </div>
+
+                <div class="uploaded-files-section">
+                    <h3><i class="fa-solid fa-list-check"></i> បញ្ជីឯកសារដែលបាន Upload រួច ( Total File: <span id="file-count">0</span> )</h3>
+                    
+                    <div class="upload-storage-summary" aria-live="polite">
+                        <div><i class="fa-solid fa-folder-open"></i><span><small>ចំនួន File</small><b id="upload-storage-count">0</b></span></div>
+                        <div><i class="fa-solid fa-database"></i><span><small>ទំហំទិន្នន័យប្រហែល</small><b id="upload-storage-size">0 B</b></span></div>
+                    </div>
+                    <div class="uploaded-files-toolbar">
+                        <label class="uploaded-file-search-wrap"><i class="fa-solid fa-magnifying-glass"></i><input id="uploaded-file-search" type="search" placeholder="ស្វែងរកតាមឈ្មោះ File ឬអ្នក Upload..."></label>
+                        <label class="upload-filter-label"><i class="fa-solid fa-filter"></i><select id="uploaded-file-type-filter" aria-label="ច្រោះប្រភេទ File"><option value="all">គ្រប់ប្រភេទ</option><option value="xls">Excel .xls</option><option value="xlsx">Excel .xlsx</option></select></label>
+                        <label class="upload-filter-label"><i class="fa-solid fa-arrow-down-wide-short"></i><select id="uploaded-file-sort" aria-label="តម្រៀប File"><option value="newest">ថ្មីបំផុត</option><option value="oldest">ចាស់បំផុត</option><option value="name-asc">ឈ្មោះ A–Z</option><option value="name-desc">ឈ្មោះ Z–A</option><option value="size-desc">ទំហំធំទៅតូច</option><option value="size-asc">ទំហំតូចទៅធំ</option></select></label>
+                        <button type="button" id="uploaded-file-month-filter" class="action-btn upload-month-filter" aria-label="ច្រោះ File តាមខែ និងឆ្នាំ"><i class="fa-solid fa-calendar-days"></i> <span id="uploaded-file-month-filter-label">ខែ / ឆ្នាំ</span></button>
+                        
+                    </div>
+                    <div class="upload-management-toolbar">
+                        <div class="upload-view-toggle" role="group" aria-label="របៀបបង្ហាញ File">
+                            <button type="button" id="upload-view-list" class="active" aria-pressed="true"><i class="fa-solid fa-list"></i> List</button>
+                            <button type="button" id="upload-view-grid" aria-pressed="false"><i class="fa-solid fa-grip"></i> Grid</button>
+                        </div>
+                        <div class="upload-management-actions">
+                            <button type="button" id="upload-open-trash" class="action-btn"><i class="fa-solid fa-trash-arrow-up"></i> Recycle Bin</button>
+                            <button type="button" id="upload-storage-dashboard" class="action-btn"><i class="fa-solid fa-chart-pie"></i> Storage</button>
+                            <button type="button" id="upload-activity-log" class="action-btn"><i class="fa-solid fa-clock-rotate-left"></i> Activity Log</button>
+                            <button type="button" id="upload-permissions" class="action-btn"><i class="fa-solid fa-user-shield"></i> Permissions</button>
+                        </div>
+                    </div>
+                    <div id="uploaded-files-grid" class="uploaded-files-grid" hidden></div>
+                    <div class="upload-bulk-toolbar" id="upload-bulk-toolbar">
+                        <label><input type="checkbox" id="upload-select-all"> ជ្រើសរើសទាំងអស់</label>
+                        <span id="upload-selected-count">បានជ្រើស 0 File</span>
+                        <button type="button" id="upload-bulk-download" class="action-btn download-btn-action"><i class="fa-solid fa-download"></i> Download Selected</button>
+                        <button type="button" id="upload-bulk-delete" class="action-btn delete-btn-action"><i class="fa-solid fa-trash"></i> Delete Selected</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="files-table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="upload-table-select-all" aria-label="ជ្រើសរើស File ទាំងអស់"></th>
+                                    <th>N°</th>
+                                    <th>User</th>
+                                    <th>Name File Excel</th>
+                                    <th>Date Upload</th>
+                                    <th>Action</th>
+                                    <th>Download</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="files-table-body">
+                                <tr id="empty-row">
+                                    <td colspan="8" style="text-align: center; color: #9ca3af;">មិនទាន់មានឯកសារត្រូវបាន Upload នៅឡើយទេ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. ផ្ទាំង Time Observe Page -->
+            <div id="time-page" class="page-content" style="display: none;">
+                <div class="observe-container">
+                    <div class="observe-header">
+                        <h2><i class="fa-solid fa-clock-rotate-left"></i> MASTER SECT (TIME OBSERVE)</h2>
+                    </div>
+
+                    <div class="observe-search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="section-search-input" placeholder="Search Section / Title...">
+                    </div>
+
+                    <div class="observe-list-wrapper" id="section-list-container">
+                        <div class="empty-observe-state">
+                            <p>សូម Upload ហ្វាល Excel ជាមុនសិន ដើម្បីទាញយកទិន្នន័យ Master Sect!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.1 ផ្ទាំង Section List Page -->
+            <div id="section-page" class="page-content" style="display: none;">
+                <div class="observe-container">
+                    <div class="observe-header observe-header-flex">
+                        <div class="observe-header-left">
+                            <button id="back-to-observe-btn" class="modal-btn modal-btn-secondary back-btn-style"><i class="fa-solid fa-arrow-left"></i> ថយក្រោយ</button>
+                            <h2 id="section-page-title" style="margin: 0;"><i class="fa-solid fa-layer-group"></i> SECTIONS</h2>
+                        </div>
+                    </div>
+
+                    <div class="observe-search-box" style="margin-top: 20px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="section-item-search-input" placeholder="Search Section...">
+                    </div>
+
+                    <div class="observe-list-wrapper" id="section-item-list-container"></div>
+                </div>
+            </div>
+
+            <!-- 3.2 ផ្ទាំង Style List Page -->
+            <div id="style-page" class="page-content" style="display: none;">
+                <div class="observe-container">
+                    <div class="observe-header observe-header-flex">
+                        <div class="observe-header-left">
+                            <button id="back-to-section-btn" class="modal-btn modal-btn-secondary back-btn-style"><i class="fa-solid fa-arrow-left"></i> ថយក្រោយ</button>
+                            <h2 id="style-page-title" style="margin: 0;"><i class="fa-solid fa-shirt"></i> STYLES</h2>
+                        </div>
+                    </div>
+
+                    <div class="observe-search-box" style="margin-top: 20px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="style-item-search-input" placeholder="Search Style...">
+                    </div>
+
+                    <div class="observe-list-wrapper" id="style-item-list-container"></div>
+                </div>
+            </div>
+
+            <!-- 3.3 ផ្ទាំង RampupDay Page -->
+            <div id="rampup-page" class="page-content" style="display: none;">
+                <div class="observe-container">
+                    <div class="observe-header observe-header-flex">
+                        <div class="observe-header-left">
+                            <button id="back-to-style-btn" class="modal-btn modal-btn-secondary back-btn-style"><i class="fa-solid fa-arrow-left"></i> ថយក្រោយ</button>
+                            <h2 id="rampup-page-title" style="margin: 0;"><i class="fa-solid fa-calendar-day"></i> RAMPUP DAYS</h2>
+                        </div>
+                    </div>
+
+                    <div class="observe-search-box" style="margin-top: 20px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="rampup-item-search-input" placeholder="Search RampupDay...">
+                    </div>
+
+                    <div class="observe-list-wrapper" id="rampup-item-list-container"></div>
+                </div>
+            </div>
+
+            <!-- 3.4 ផ្ទាំង Prep_Assembly Page -->
+            <div id="prep-page" class="page-content" style="display: none;">
+                <div class="observe-container">
+                    <div class="observe-header observe-header-flex">
+                        <div class="observe-header-left">
+                            <button id="back-to-rampup-btn" class="modal-btn modal-btn-secondary back-btn-style"><i class="fa-solid fa-arrow-left"></i> ថយក្រោយ</button>
+                            <h2 id="prep-page-title" style="margin: 0;"><i class="fa-solid fa-list-check"></i> Prep / Assembly</h2>
+                        </div>
+                    </div>
+
+                    <div class="prep-header-actions" style="margin-top: 20px; display: flex; align-items: center; gap: 12px;">
+                        <div class="prep-search-box" style="flex: 1; display: flex; align-items: center; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 14px;">
+                            <i class="fa-solid fa-magnifying-glass" style="color: #64748b;"></i>
+                            <input type="text" id="prep-item-search-input" placeholder="Search Prep / PrimaryKey..." style="border: none; background: transparent; outline: none; width: 100%; margin-left: 10px; font-size: 14px; color: #1e293b;">
+                        </div>
+                        <button id="refresh-prep-btn" class="refresh-btn-action" title="Refresh Data" style="background-color: #f8fafc; border: 1px solid #cbd5e1; color: #475569; padding: 10px 14px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-rotate"></i>
+                        </button>
+                    </div>
+
+                    <div class="observe-list-wrapper" id="prep-item-list-container" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+
+            <!-- 3.5 ផ្ទាំង Process Page -->
+            <div id="process-page" class="page-content" style="display: none;">
+                <div class="observe-container">
+                    <div class="observe-header observe-header-flex">
+                        <div class="observe-header-left">
+                            <button id="back-to-prep-btn" class="modal-btn modal-btn-secondary back-btn-style"><i class="fa-solid fa-arrow-left"></i> ថយក្រោយ</button>
+                            <h2 id="process-page-title" style="margin: 0;"><i class="fa-solid fa-list-check"></i> PROCESSES</h2>
+                        </div>
+                    </div>
+
+                    <div class="prep-header-actions" style="margin-top: 20px; display: flex; align-items: center; gap: 12px;">
+                        <div class="prep-search-box" style="flex: 1; display: flex; align-items: center; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 14px;">
+                            <i class="fa-solid fa-magnifying-glass" style="color: #64748b;"></i>
+                            <input type="text" id="process-item-search-input" placeholder="Search Process..." style="border: none; background: transparent; outline: none; width: 100%; margin-left: 10px; font-size: 14px; color: #1e293b;">
+                        </div>
+                    </div>
+
+                    <div class="observe-list-wrapper" id="process-item-list-container" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+
+            <!-- 3.6 ផ្ទាំង Time Study Form Page -->
+            <div id="timestudy-page" class="page-content" style="display: none;">
+                <div class="observe-container">
+                    <div class="observe-header observe-header-flex">
+                        <div class="observe-header-left">
+                            <button id="back-to-process-btn" class="modal-btn modal-btn-secondary back-btn-style"><i class="fa-solid fa-arrow-left"></i> ថយក្រោយ</button>
+                            <h2 id="timestudy-page-title" style="margin: 0;"><i class="fa-solid fa-stopwatch"></i> TIME STUDY OBSERVATION</h2>
+                        </div>
+                    </div>
+
+                    <!-- Info Card -->
+                    <div class="ts-info-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px;">
+                        <div>
+                            <div id="ts-process-khmer" class="ts-info-khmer" style="font-weight: bold; font-size: 16px;">-</div>
+                            <div id="ts-process-thai" class="ts-info-thai" style="color: #64748b; font-size: 13px; margin-bottom: 8px;">-</div>
+                            <div class="ts-info-details" style="display: flex; gap: 15px; font-size: 13px; color: #334155; align-items: center;">
+                                <div><b>PrimaryKey:</b> <span id="ts-primary-key">-</span></div>
+                                <div><b>SMV:</b> <span id="ts-smv" style="font-weight: bold; color: #2563eb;">-</span></div>
+                                <div><b>Sewer:</b> <span id="ts-sewer-badge" style="background: #e0f2fe; color: #0284c7; padding: 3px 8px; border-radius: 6px; font-weight: bold;">-</span></div>
+                            </div>
+                        </div>
+                        <div>
+                            <button onclick="openTimeObserveEditModal()" style="background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 5px rgba(37,99,235,0.2);">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="ts-stopwatch-card">
+                        <div id="stopwatch-display" class="stopwatch-display">00:00.00</div>
+                        
+                        <div class="ts-buttons-wrapper">
+                            <button id="ts-main-action-btn" class="modal-btn modal-btn-primary ts-btn" style="background-color: #10b981;"><i class="fa-solid fa-play"></i> Play</button>
+                            <button id="ts-lap-btn" class="modal-btn modal-btn-secondary ts-btn" disabled style="color: #94a3b8;"><i class="fa-solid fa-flag"></i> កត់ត្រា (Lap)</button>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 250px; overflow-y: auto; margin-bottom: 20px;">
+                            <table class="files-table" style="width: 100%; text-align: left;">
+                                <thead>
+                                    <tr>
+                                        <th>Round</th>
+                                        <th>Time</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lap-table-body">
+                                    <tr>
+                                        <td colspan="3" style="text-align: center; color: #94a3b8;">មិនទាន់មានទិន្នន័យចាប់ម៉ោងនៅឡើយទេ</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <button id="ts-save-btn" class="ts-save-btn">
+                            <i class="fa-solid fa-floppy-disk" style="margin-right: 8px;"></i> រក្សាទុកទិន្នន័យ (Save to Dashboard)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Clone Day — Smart Merge -->
+            <div id="clone-page" class="page-content" style="display: none;">
+                <section class="clone-day-shell">
+                    <div class="clone-day-heading">
+                        <div class="clone-day-heading-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                        <div><h2>Clone Day <span>Smart Merge</span></h2><p>ចម្លង Process ពីថ្ងៃដើមទៅថ្ងៃគោលដៅ ដោយរក្សាទិន្នន័យចាស់ និងពិនិត្យស្ទួនជាមុន។</p></div>
+                    </div>
+                    <div class="clone-day-steps" aria-label="Clone Day steps">
+                        <div class="clone-step is-active" data-clone-step="1"><b>1</b><span>Source Day</span></div>
+                        <div class="clone-step" data-clone-step="2"><b>2</b><span>Target Day</span></div>
+                        <div class="clone-step" data-clone-step="3"><b>3</b><span>Preview</span></div>
+                        <div class="clone-step" data-clone-step="4"><b>4</b><span>Confirm</span></div>
+                        <div class="clone-step" data-clone-step="5"><b>5</b><span>Report</span></div>
+                    </div>
+                    <div class="clone-day-card">
+                        <div class="clone-day-card-title"><i class="fa-solid fa-file-circle-check"></i><div><h3>1. ជ្រើស File និងថ្ងៃដើម</h3></div></div>
+                        <div class="clone-day-form-grid clone-source-form-grid">
+                            <div class="clone-source-layout-row clone-source-layout-main">
+                                <div class="clone-source-left-group">
+                                    <div class="clone-source-left-group-head"><i class="fa-solid fa-database"></i><h3>ជ្រើស File ទិន្នន័យ</h3></div>
+                                    <div class="clone-source-file-field">
+                                        <label for="clone-source-file">ជ្រើស File ទិន្នន័យ</label>
+                                        <div class="clone-source-file-control-row">
+                                            <select id="clone-source-file"><option value="">— ជ្រើស File ទិន្នន័យ —</option></select>
+                                            <button type="button" id="clone-reset-btn" class="clone-btn-light clone-inline-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                                        </div>
+                                    </div>
+                                    <div class="clone-target-field"><label for="clone-target-days">Target Day(s)</label><div class="clone-target-control-row"><input id="clone-target-days" type="text" disabled><button type="button" id="clone-preview-btn" class="clone-btn-primary" disabled><i class="fa-solid fa-magnifying-glass-chart"></i> Preview</button></div></div>
+                                </div>
+                                <div class="clone-source-right-group">
+                                    <div class="clone-source-panel clone-source-panel-primary">
+                                        
+                                        <div id="clone-source-browser" class="clone-source-browser" hidden>
+                                            <div class="clone-source-browser-head"><div><h4>ថ្ងៃដែលមានក្នុង File</h4></div></div>
+                                            <div id="clone-source-day-list" class="clone-source-day-list"></div>
+                                        </div>
+                                        <div class="clone-source-empty-hint" id="clone-source-first-hint">សូមជ្រើស File ទិន្នន័យ ដើម្បីបង្ហាញតារាងថ្ងៃដើម។</div>
+                                    </div>
+                                    <div class="clone-source-panel clone-source-panel-secondary" id="clone-source-panel-secondary" hidden>
+                                        <div id="clone-source-browser-secondary" class="clone-source-browser">
+                                            <div class="clone-source-browser-head clone-source-edit-header"><div><h4>កែទិន្នន័យមុន Clone</h4></div><button type="button" class="clone-btn-primary" id="clone-source-save-preview"><i class="fa-solid fa-floppy-disk"></i> Save</button></div>
+                                            <div id="clone-source-day-list-secondary" class="clone-source-day-list"></div>
+                                        </div>
+                                    </div>
+                                    <div class="clone-source-empty-hint clone-source-secondary-hint" id="clone-source-secondary-hint" hidden>ប្រអប់ជ្រើសថ្ងៃដើមទី២ នឹងបង្ហាញនៅទីនេះ បន្ទាប់ពីចុច «ជ្រើសថ្ងៃនេះ» ក្នុងតារាងខាងលើ។</div>
+                                </div>
+                            </div>
+                            <label style="display:none">Source Day<select id="clone-source-day" disabled><option value="">— ជ្រើសថ្ងៃដើម —</option></select></label>
+                        </div>
+                    </div>
+                    <div id="clone-preview-panel" class="clone-day-card clone-results-panel" hidden></div>
+                    <div id="clone-report-panel" class="clone-day-card clone-report-panel" hidden></div>
+                </section>
+            </div>
+
+            <!-- 5. ផ្ទាំង Edit File Page -->
+            <div id="edit-page" class="page-content" style="display: none;">
+                <h2>Edit File Page</h2>
+            </div>
+
+            <!-- 6. ផ្ទាំង Dashboard Analysis Page -->
+            <div id="dashboard-page" class="page-content" style="display: none;"></div>    
+        </div>
+</div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Custom Modern Modal for Alerts & Confirms -->
+    <div id="custom-modal" class="custom-modal-overlay" style="display: none;">
+        <div class="custom-modal-box">
+            <div class="custom-modal-icon" id="modal-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 id="modal-title">ការជូនដំណឹង</h3>
+            <p id="modal-message">សារជូនដំណឹងនឹងបង្ហាញនៅទីនេះ...</p>
+            <div class="custom-modal-buttons">
+                <button id="modal-btn-cancel" class="modal-btn modal-btn-secondary" style="display: none;">No</button>
+                <button id="modal-btn-ok" class="modal-btn modal-btn-primary">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🌟 MODAL សម្រាប់ Edit Data (Dynamic Inputs តាមក្បាលតារាង Excel ទាំងអស់) -->
+    <div id="timeObserveEditModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background: #fff; width: 850px; max-width: 95%; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); overflow: hidden; display: flex; flex-direction: column; max-height: 85vh;">
+            
+            <!-- Modal Header -->
+            <div style="background: #2563eb; color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0; font-size: 16px;"><i class="fa-solid fa-table-cells"></i> កែសម្រួលទិន្នន័យ និងតារាង Excel</h3>
+                <button onclick="closeTimeObserveEditModal()" style="background: none; border: none; color: #fff; font-size: 18px; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <!-- Modal Body (Dynamic Inputs Container) -->
+            <div style="padding: 25px; overflow-y: auto; flex: 1;">
+                <div id="dynamic-edit-inputs-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                    <!-- ប្រអប់ Input នឹងបង្ហាញនៅទីនេះដោយស្វ័យប្រវត្តិតามក្បាលតារាង Excel ទាំងអស់ -->
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div style="background: #f8fafc; padding: 12px 20px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #e2e8f0;">
+                <button onclick="closeTimeObserveEditModal()" style="padding: 8px 16px; background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: #475569;">បោះបង់</button>
+                <button onclick="saveTimeObserveEdit()" style="padding: 8px 16px; background: #2563eb; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;"><i class="fa-solid fa-floppy-disk"></i> រក្សាទុក (Save)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Libraries and Main JS -->
+    <!-- SweetAlert2 CDN -->
+    <script>
+    // Load large Excel metadata from IndexedDB before starting the main app.
+    (function () {
+      const DB_NAME = 'TimeStudyProLargeStorage';
+      const DB_VERSION = 1;
+      const KEYS = ['uploadedExcelFiles', 'uploadedExcelTrash'];
+      function openDB() {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open(DB_NAME, DB_VERSION);
+          request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains('records')) request.result.createObjectStore('records'); };
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error);
+        });
+      }
+      function getValue(db, key) {
+        return new Promise((resolve, reject) => { const r = db.transaction('records').objectStore('records').get(key); r.onsuccess = () => resolve(r.result); r.onerror = () => reject(r.error); });
+      }
+      function putValue(db, key, value) {
+        return new Promise((resolve, reject) => { const tx = db.transaction('records', 'readwrite'); tx.objectStore('records').put(value, key); tx.oncomplete = resolve; tx.onerror = () => reject(tx.error); });
+      }
+      function startMainScript() {
+        const script = document.createElement('script'); script.src = 'script.js'; document.body.appendChild(script);
+      }
+      // Ask the browser to keep this app's local database persistent where supported.
+      // This reduces automatic eviction risk, but cannot override device/browser quota limits.
+      async function requestPersistentStorage() {
+        try { if (navigator.storage && navigator.storage.persist) await navigator.storage.persist(); } catch (_) {}
+      }
+      requestPersistentStorage().finally(() => openDB().then(async db => {
+        window.tspLargeStorageDB = db;
+        window.tspLargeStorageCache = {};
+        for (const key of KEYS) {
+          let value = [];
+          // New format: a lightweight manifest points to separately stored records.
+          let manifest = await getValue(db, key + ':manifest');
+          if (Array.isArray(manifest)) {
+            const items = await Promise.all(manifest.map(recordKey => getValue(db, recordKey)));
+            value = items.filter(item => item && typeof item === 'object');
+          } else {
+            // One-time migration from the old single-array format.
+            const oldDbValue = await getValue(db, key);
+            let oldLocalValue = null;
+            try { oldLocalValue = JSON.parse(localStorage.getItem(key) || 'null'); } catch (_) {}
+            const legacy = Array.isArray(oldDbValue) ? oldDbValue : (Array.isArray(oldLocalValue) ? oldLocalValue : []);
+            value = legacy;
+            if (legacy.length) {
+              await new Promise((resolve, reject) => {
+                const tx = db.transaction('records', 'readwrite');
+                const store = tx.objectStore('records');
+                const prefix = key + ':';
+                const keys = legacy.map((item, i) => prefix + encodeURIComponent(String((item && (item.fileHash || item.id || (item.name && item.uploadedAt ? item.name + '|' + item.uploadedAt : ''))) || ('record-' + i))));
+                legacy.forEach((item, i) => store.put(item, keys[i]));
+                store.put(keys, key + ':manifest');
+                tx.oncomplete = resolve; tx.onerror = tx.onabort = () => reject(tx.error);
+              });
+            } else {
+              await putValue(db, key + ':manifest', []);
+            }
+          }
+          window.tspLargeStorageCache[key] = value;
+          try { localStorage.removeItem(key); } catch (_) {}
+        }
+        startMainScript();
+      }).catch(err => {
+        console.error('IndexedDB unavailable; using existing browser storage.', err);
+        window.tspLargeStorageDB = null;
+        window.tspLargeStorageCache = null;
+        startMainScript();
+      }));
+    })();
+    </script>
+    <!-- <script src="dashboard-analytics.js"></script> -->
+     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- <script src="user-management.js"></script> -->
+</body>
+</html>
